@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const penaltiesController = require("../controllers/playersController");
+const penaltiesController = require("../controllers/penaltiesController");
 
 router.get("/", penaltiesController.getPenalties);
 

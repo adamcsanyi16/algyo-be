@@ -26,7 +26,7 @@ exports.getPlayers = async (req, res) => {
   }
 }*/
 
-exports.createPlayer = async (req, res) => {
+exports.addPlayer = async (req, res) => {
   const { name, position, birth_date, photo } = req.body
 
   try {

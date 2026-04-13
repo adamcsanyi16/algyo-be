@@ -8,9 +8,11 @@ app.use(cors());
 app.use(express.json());
 
 const playersRoutes = require("./routes/players");
+const penaltyRoutes = require("./routes/penalties");
 const pointsRoutes = require("./routes/points");
 
 app.use("/players", playersRoutes);
+app.use("/penalties", penaltyRoutes);
 app.use("/points", pointsRoutes);
 
 app.get("/", (req, res) => {

@@ -7,7 +7,7 @@ router.get("/", playersController.getPlayers);
 
 //router.get("/:id", playersController.getPlayerById)
 
-router.post("/", playersController.createPlayer)
+router.post("/", playersController.addPlayer);
 
 //router.put("/:id", playersController.updatePlayer)
 

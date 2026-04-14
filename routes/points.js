@@ -4,7 +4,7 @@ const router = express.Router();
 const pointsController = require("../controllers/pointsController");
 
 router.get("/:id", pointsController.getPointsById);
-
-router.put("/:id" , pointsController.addPointsById);
+router.put("/:id", pointsController.addPointsById);
+router.patch("/bulk-update", pointsController.bulkUpdatePoints);
 
 module.exports = router;

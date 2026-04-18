@@ -1,28 +1,38 @@
 const pool = require("../db");
 
 exports.bulkUpdatePenalties = async (req, res) => {
-  const updates = req.body; 
+  const updates = req.body;
   if (!Array.isArray(updates)) {
-    return res.status(400).json({ error: "A kérésnek tömböt kell tartalmaznia." });
+    return res
+      .status(400)
+      .json({ error: "A kérésnek tömböt kell tartalmaznia." });
   }
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
     const results = [];
     for (const { id, paid } of updates) {
       let result;
-      if (paid === true || paid === 'true') {
+      if (paid === true || paid === "true") {
         result = await client.query(
           `UPDATE penalties SET paid=$1, paid_at=NOW() WHERE id=$2 RETURNING *`,
-          [paid, id]
+          [paid, id],
         );
+      } else if (paid === false || paid === "false") {
+        result = await client.query(
+          `UPDATE penalties SET paid=$1, paid_at=NULL WHERE id=$2 RETURNING *`,
+          [paid, id],
+        );
+      }
+      if (!result.rows[0]) {
+        throw new Error(`Nincs ilyen id: ${id}`);
       }
       results.push(result.rows[0]);
     }
-    await client.query('COMMIT');
+    await client.query("COMMIT");
     res.json(results);
   } catch (err) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     res.status(500).json({ error: err.message });
   } finally {
     client.release();

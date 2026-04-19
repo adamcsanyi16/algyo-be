@@ -93,7 +93,7 @@ exports.addPenalty = async (req, res) => {
 
 exports.updatePenalty = async (req, res) => {
   const { id } = req.params;
-  const { paid} = req.body;
+  const { paid } = req.body;
 
   try {
     let result;

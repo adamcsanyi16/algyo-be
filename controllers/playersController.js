@@ -3,7 +3,7 @@ const pool = require("../db");
 exports.getPlayers = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT players.id, players.name, points.amount FROM players LEFT JOIN points ON players.id = points.player_id",
+      "SELECT players.id, players.name, points.amount FROM players LEFT JOIN points ON players.id = points.player_id ORDER BY players.name",
     );
     res.json(result.rows);
   } catch (err) {
@@ -27,19 +27,19 @@ exports.getPlayers = async (req, res) => {
 }*/
 
 exports.addPlayer = async (req, res) => {
-  const { name, position, birth_date, photo } = req.body
+  const { name, position, birth_date, photo } = req.body;
 
   try {
     const result = await pool.query(
       "INSERT INTO players (name, position, birth_date, photo) VALUES ($1,$2,$3,$4) RETURNING *",
-      [name, position, birth_date, photo]
-    )
+      [name, position, birth_date, photo],
+    );
 
-    res.json(result.rows[0])
+    res.json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err.message });
   }
-}
+};
 
 /*exports.updatePlayer = async (req, res) => {
   const { id } = req.params

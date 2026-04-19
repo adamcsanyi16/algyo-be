@@ -4,7 +4,26 @@ const pool = require("../db");
 exports.getMonthlyLosers = async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM monthly_losers");
-    res.json(result.rows);
+    const losers = result.rows;
+
+    for (const loser of losers) {
+      if (loser.players && Array.isArray(loser.players)) {
+        loser.players = await Promise.all(
+          loser.players.map(async (p) => {
+            const playerRes = await pool.query(
+              "SELECT name FROM players WHERE id = $1",
+              [p.player_id]
+            );
+            return {
+              ...p,
+              name: playerRes.rows[0] ? playerRes.rows[0].name : null,
+            };
+          })
+        );
+      }
+    }
+
+    res.json(losers);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

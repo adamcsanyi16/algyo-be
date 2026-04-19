@@ -13,6 +13,6 @@ router.put("/:id", penaltiesController.updatePenalty);
 
 router.delete("/:id", penaltiesController.deletePenalty);
 
-router.put("/bulk-update", penaltiesController.bulkUpdatePenalties);
+router.patch("/bulk-update", penaltiesController.bulkUpdatePenalties);
 
 module.exports = router;

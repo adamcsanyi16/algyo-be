@@ -10,10 +10,12 @@ app.use(express.json());
 const playersRoutes = require("./routes/players");
 const penaltyRoutes = require("./routes/penalties");
 const pointsRoutes = require("./routes/points");
+const monthlyLosersRoutes = require("./routes/monthlyLosers");
 
 app.use("/players", playersRoutes);
 app.use("/penalties", penaltyRoutes);
 app.use("/points", pointsRoutes);
+app.use("/monthly-losers", monthlyLosersRoutes);
 
 app.get("/", (req, res) => {
   res.send("API működik");

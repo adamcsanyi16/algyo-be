@@ -72,7 +72,7 @@ exports.getPenalties = async (req, res) => {
 }*/
 
 exports.addPenalty = async (req, res) => {
-  const { player_name, description, amount, paid } = req.body;
+  const { player_name, description, amount } = req.body;
 
   try {
     const playerResult = await pool.query(
@@ -81,8 +81,8 @@ exports.addPenalty = async (req, res) => {
     );
 
     const result = await pool.query(
-      "INSERT INTO penalties (player_id, description, amount, paid) VALUES ($1,$2,$3,$4) RETURNING *",
-      [playerResult.rows[0].id, description, amount, paid],
+      "INSERT INTO penalties (player_id, description, amount, paid, paid_at) VALUES ($1,$2,$3,FALSE,NULL) RETURNING *",
+      [playerResult.rows[0].id, description, amount],
     );
 
     res.json(result.rows[0]);
@@ -93,7 +93,7 @@ exports.addPenalty = async (req, res) => {
 
 exports.updatePenalty = async (req, res) => {
   const { id } = req.params;
-  const { paid } = req.body;
+  const { paid} = req.body;
 
   try {
     let result;

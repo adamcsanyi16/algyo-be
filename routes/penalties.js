@@ -5,9 +5,11 @@ const penaltiesController = require("../controllers/penaltiesController");
 
 router.get("/", penaltiesController.getPenalties);
 
-//router.get("/:id", penaltiesController.getPenaltyById)
+router.get("/:id", penaltiesController.getPenaltyById);
 
 router.post("/", penaltiesController.addPenalty);
+
+router.put("/:id/paid", penaltiesController.updatePaidPenalty);
 
 router.put("/:id", penaltiesController.updatePenalty);
 

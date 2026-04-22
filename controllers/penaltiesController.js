@@ -56,20 +56,19 @@ exports.getPenalties = async (req, res) => {
   }
 };
 
-/*exports.getPenaltyById = async (req, res) => {
-  const { id } = req.params
+exports.getPenaltyById = async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM penalties WHERE id = $1",
-      [id]
-    )
+    const result = await pool.query("SELECT * FROM penalties WHERE id = $1", [
+      id,
+    ]);
 
-    res.json(result.rows[0])
+    res.json(result.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: err.message });
   }
-}*/
+};
 
 exports.addPenalty = async (req, res) => {
   const { player_name, description, amount } = req.body;
@@ -92,6 +91,27 @@ exports.addPenalty = async (req, res) => {
 };
 
 exports.updatePenalty = async (req, res) => {
+  const { id } = req.params;
+  const { paid } = req.body;
+
+  try {
+    let result;
+    if (paid === true || paid === "true") {
+      result = await pool.query(
+        `UPDATE penalties 
+         SET paid=$1, paid_at=NOW()
+         WHERE id=$2
+         RETURNING *`,
+        [paid, id],
+      );
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updatePaidPenalty = async (req, res) => {
   const { id } = req.params;
   const { paid } = req.body;
 

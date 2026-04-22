@@ -11,7 +11,7 @@ exports.getPlayers = async (req, res) => {
   }
 };
 
-/*exports.getPlayerById = async (req, res) => {
+exports.getPlayerById = async (req, res) => {
   const { id } = req.params
 
   try {
@@ -24,7 +24,7 @@ exports.getPlayers = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
-}*/
+}
 
 exports.addPlayer = async (req, res) => {
   const { name, position, birth_date, photo } = req.body;
@@ -41,7 +41,7 @@ exports.addPlayer = async (req, res) => {
   }
 };
 
-/*exports.updatePlayer = async (req, res) => {
+exports.updatePlayer = async (req, res) => {
   const { id } = req.params
   const { name, position, birth_date, photo } = req.body
 
@@ -58,7 +58,7 @@ exports.addPlayer = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
-}*/
+}
 
 exports.deletePlayer = async (req, res) => {
   const { id } = req.params;

@@ -60,10 +60,13 @@ exports.getPenaltyById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query("SELECT * FROM penalties WHERE id = $1", [
-      id,
-    ]);
-
+    const result = await pool.query(
+      `SELECT penalties.*, players.name as name
+       FROM penalties
+       LEFT JOIN players ON penalties.player_id = players.id
+       WHERE penalties.id = $1`,
+      [id],
+    );
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });

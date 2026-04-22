@@ -95,19 +95,46 @@ exports.addPenalty = async (req, res) => {
 
 exports.updatePenalty = async (req, res) => {
   const { id } = req.params;
-  const { paid } = req.body;
+  const { name, description, amount } = req.body;
 
   try {
-    let result;
-    if (paid === true || paid === "true") {
-      result = await pool.query(
-        `UPDATE penalties 
-         SET paid=$1, paid_at=NOW()
-         WHERE id=$2
-         RETURNING *`,
-        [paid, id],
+    let playerId = null;
+    if (name) {
+      const playerResult = await pool.query(
+        "SELECT id FROM players WHERE name = $1",
+        [name],
       );
+      if (!playerResult.rows[0]) {
+        return res
+          .status(400)
+          .json({ error: "Nincs ilyen játékos névvel: " + name });
+      }
+      playerId = playerResult.rows[0].id;
     }
+
+    const fields = [];
+    const values = [];
+    let idx = 1;
+    if (playerId !== null) {
+      fields.push(`player_id = $${idx++}`);
+      values.push(playerId);
+    }
+    if (description !== undefined) {
+      fields.push(`description = $${idx++}`);
+      values.push(description);
+    }
+    if (amount !== undefined) {
+      fields.push(`amount = $${idx++}`);
+      values.push(amount);
+    }
+
+    if (fields.length === 0) {
+      return res.status(400).json({ error: "Nincs frissítendő mező." });
+    }
+
+    values.push(id);
+    const query = `UPDATE penalties SET ${fields.join(", ")} WHERE id = $${values.length} RETURNING *`;
+    const result = await pool.query(query, values);
     res.json(result.rows[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });

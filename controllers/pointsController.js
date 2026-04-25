@@ -57,3 +57,12 @@ exports.addPointsById = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.resetAllPoints = async (req, res) => {
+  try {
+    await pool.query("UPDATE points SET amount = 0");
+    res.json({ message: "Minden játékos pontja lenullázva." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

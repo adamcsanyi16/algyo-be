@@ -13,7 +13,7 @@ exports.bulkUpdatePoints = async (req, res) => {
     const results = [];
     for (const { id, pointCount } of updates) {
       const result = await client.query(
-        "UPDATE points SET amount = amount + $1, allPoints = allPoints + $1 WHERE id = $2 RETURNING *",
+        "UPDATE points SET amount = amount + $1, all_points = all_points + $1 WHERE id = $2 RETURNING *",
         [pointCount, id],
       );
       results.push(result.rows[0]);
@@ -48,8 +48,8 @@ exports.addPointsById = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "UPDATE points SET amount= amount + $1, allPoints = allPoints + $1 where id=$2 RETURNING *",
-      [pointCount, id],
+      "UPDATE points SET amount= amount + $1, all_points = all_points + $2 where id=$3 RETURNING *",
+      [pointCount, pointCount, id],
     );
 
     res.json(result.rows[0]);

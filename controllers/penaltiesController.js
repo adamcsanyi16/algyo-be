@@ -60,6 +60,7 @@ exports.getPenaltyById = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Csatoljuk a játékos nevét is
     const result = await pool.query(
       `SELECT penalties.*, players.name as name
        FROM penalties

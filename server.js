@@ -11,11 +11,15 @@ const playersRoutes = require("./routes/players");
 const penaltyRoutes = require("./routes/penalties");
 const pointsRoutes = require("./routes/points");
 const monthlyLosersRoutes = require("./routes/monthlyLosers");
+const usersRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth");
 
 app.use("/players", playersRoutes);
 app.use("/penalties", penaltyRoutes);
 app.use("/points", pointsRoutes);
 app.use("/monthly-losers", monthlyLosersRoutes);
+app.use("/users", usersRoutes);
+app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("API működik");

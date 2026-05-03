@@ -72,7 +72,6 @@ exports.register = async (req, res) => {
       [name.trim(), email.toLowerCase(), hashedPassword, "user"],
     );
 
-    // JWT token létrehozása
     const token = jwt.sign(
       { id: result.rows[0].id, email: result.rows[0].email },
       process.env.JWT_SECRET,
@@ -138,7 +137,7 @@ exports.login = async (req, res) => {
     // JWT token létrehozása
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_SECRET || "your-secret-key",
+      process.env.JWT_SECRET,
       { expiresIn: "7d" },
     );
 
@@ -158,7 +157,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// Jelenlegi felhasználó adatainak lekérése
 exports.getMe = async (req, res) => {
   try {
     const result = await pool.query(

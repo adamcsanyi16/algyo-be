@@ -2,11 +2,10 @@ const jwt = require("jsonwebtoken");
 const pool = require("../db");
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  if (!authHeader) return res.status(401).json({ error: 'No token provided' });
 
-  if (!token) {
-    return res.status(401).json({ error: "Token nincs megadva" });
-  }
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader;
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

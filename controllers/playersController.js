@@ -3,7 +3,7 @@ const pool = require("../db");
 exports.getPlayers = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT players.id, players.name, points.amount FROM players LEFT JOIN points ON players.id = points.player_id ORDER BY players.name",
+      "SELECT players.id, players.name, points.amount, points.all_points FROM players LEFT JOIN points ON players.id = points.player_id ORDER BY players.name",
     );
     res.json(result.rows);
   } catch (err) {
